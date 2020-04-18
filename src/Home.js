@@ -1,8 +1,41 @@
 import React, { Component } from "react";
 import Card from 'react-bootstrap/Card';
 import CardColumns from 'react-bootstrap/CardColumns'
+import axios from 'axios';
  
+
 class Home extends Component {
+  constructor() {
+    super()
+    this.state = {
+      projects: [],
+    };
+  }
+
+  componentDidMount() {
+    axios.get("http://127.0.0.1:5000/getallprojects")
+    .then(results => {
+      console.log(results.data['projects'])
+      return results.data['projects'];
+    }).then(data => {
+      let projects = data.map((proj) =>{
+        return(
+          <Card>
+                <Card.Img variant="top" src={proj['image']}/>
+                <Card.Body>
+                <Card.Title>{proj['project_name']}</Card.Title>
+
+                <Card.Text>
+                  {proj['description']}
+                </Card.Text>
+                </Card.Body>
+          </Card>
+        )
+      })
+      this.setState({projects: projects})
+    })
+  }
+
   render() {
     return (
       <div>
@@ -11,9 +44,12 @@ class Home extends Component {
         
         <br></br>
         <p>Here are the Curriculum Projects offered by CS+SocialGood</p>
- 
+
 
         <CardColumns>
+          {this.state.projects}
+
+            {/*
             <Card>
                 <Card.Img variant="top" src="https://res.cloudinary.com/devex/image/fetch/c_scale,f_auto,q_auto,w_720/https://lh6.googleusercontent.com/HqlkUmT5nWr1H-DSn72HFOsVi8IzW1zphpMrzOOSZ7xxo085R3y2V5n-_74NvlAbe4h0CkoR_mq4V-h3aBj2E4qU5dA5HQemqrOSmZrP4GxGADPCdN8hYKpOiSRh3x898nG9UV7m" />
                 <Card.Body>
@@ -55,6 +91,7 @@ class Home extends Component {
                 </Card.Text>
                 </Card.Body>
             </Card>
+            */}
 
            
 
