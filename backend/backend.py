@@ -110,8 +110,24 @@ def uploadteacher():
 	teacherList.insert_one(teacher).inserted_id
 	return "Uploaded"
 
+@app.route('/createcurriculum')
+def createcurriculum():
+	curriculum_name = event['curriculum_name']
+	teacher_id = event['teacher_id']
+	project_list = event['project_list']
 
+	client = pymongo.MongoClient("mongodb://Teach:teachCS@edu-content-database-shard-00-00-wxgai.mongodb.net:27017,edu-content-database-shard-00-01-wxgai.mongodb.net:27017,edu-content-database-shard-00-02-wxgai.mongodb.net:27017/test?ssl=true&replicaSet=edu-content-database-shard-0&authSource=admin&retryWrites=true&w=majority")
+	edu_database = client['edu-content']
+	curriculum_list = edu_database.curriculums
 
+	curriculum = {
+		"curriculum_name": curriculum_name,
+		"teacher_id": teacher_id,
+		"project_list": project_list,
+	}
+
+	curriculum_list.insert_one(curriculum).inserted_id
+	return "Curriculum created and uploaded"
 
 if __name__ == '__main__':
     app.run()
