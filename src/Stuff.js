@@ -1,6 +1,22 @@
 import React, { Component } from "react";
+import axios from "axios"
  
 class Stuff extends Component {
+
+  submitForm(curriculumName, days, designThinking, socialtopics, codingtopics){
+    axios.post('http://127.0.0.1:5000/generateCurriculum', {
+      curriculumName: curriculumName,
+      days: days,
+      designThinking: designThinking,
+      socialtopics: socialtopics,
+      codingtopics: codingtopics
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+  }
+
+
   render() {
     return (
       <div>

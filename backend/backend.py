@@ -53,16 +53,30 @@ def uploadMongoCode():
 
 	return "Uploading project now!"
 
+#Right Now, this is a demo version of sign in!
+@app.route('/signin', methods=['POST'])
+def signin():
+	content = request.get_json()
+	try:
+		username = content['username']
+	except: 
+		username = None
+	try:
+		password = content['password']
+	except:
+		password = None
+	if (username == None or password == None):
+		return jsonify({'response': 'bad request, please try again and specify a \'phoneNumber\' parameter in the JSON request body'})
+	else:
+		return jsonify({'user_id': "1"})
+
+
 
 @app.route('/getallprojects')
 def getallprojects():
 	client = pymongo.MongoClient("mongodb://Teach:teachCS@edu-content-database-shard-00-00-wxgai.mongodb.net:27017,edu-content-database-shard-00-01-wxgai.mongodb.net:27017,edu-content-database-shard-00-02-wxgai.mongodb.net:27017/test?ssl=true&replicaSet=edu-content-database-shard-0&authSource=admin&retryWrites=true&w=majority")
 	edu_database = client['edu-content']
 	projectList = edu_database.projects.find()
-	#name
-	#image
-	#description
-	#cs_topic
 	json_response = []
 	for project in projectList:
 		project_json = {
@@ -73,6 +87,10 @@ def getallprojects():
 		json_response.append(project_json)
 
 	return jsonify(projects=json_response)
+
+@app.route('/generateCurriculum')
+def generateCurriculum():
+	return "Curriculum is here"
 
 
 
@@ -92,10 +110,6 @@ def uploadteacher():
 	teacherList.insert_one(teacher).inserted_id
 	return "Uploaded"
 
-
-@app.route('/<name>')
-def hello_name(name):
-    return "Hello {}!".format(name)
 
 
 
